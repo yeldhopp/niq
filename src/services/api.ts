@@ -1,6 +1,6 @@
 import { Project, Profile, User, Bid } from '../types';
 
-const API_BASE_URL = 'https://tech.niq.net/wp-json/wp/v2';
+const API_BASE_URL = 'https://tech.niq.net/wp-json/niq-network/v1';
 
 // Helper function for API requests
 async function fetchAPI<T>(endpoint: string, options = {}): Promise<T> {
@@ -24,15 +24,15 @@ export const projectsAPI = {
       ...filters,
     });
     
-    return fetchAPI(`/project?${queryParams.toString()}`);
+    return fetchAPI(`/projects?${queryParams.toString()}`);
   },
   
   getProject: (id: number): Promise<Project> => {
-    return fetchAPI(`/project/${id}`);
+    return fetchAPI(`/projects/${id}`);
   },
   
   getFeaturedProjects: (): Promise<Project[]> => {
-    return fetchAPI('/project?featured=1&per_page=3');
+    return fetchAPI('/projects?featured=1&per_page=3');
   },
 };
 
@@ -44,15 +44,15 @@ export const profilesAPI = {
       ...filters,
     });
     
-    return fetchAPI(`/freelancer-profiles?${queryParams.toString()}`);
+    return fetchAPI(`/profiles?${queryParams.toString()}`);
   },
   
   getProfile: (id: number): Promise<Profile> => {
-    return fetchAPI(`/freelancer-profiles/${id}`);
+    return fetchAPI(`/profiles/${id}`);
   },
   
   getFeaturedProfiles: (): Promise<Profile[]> => {
-    return fetchAPI('/freelancer-profiles?featured=1&per_page=4');
+    return fetchAPI('/profiles?featured=1&per_page=4');
   },
 };
 
