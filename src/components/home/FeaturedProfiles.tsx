@@ -167,11 +167,11 @@ export const FeaturedProfiles: React.FC = () => {
                   </p>
                   
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {profile.skills.slice(0, 3).map((skill) => (
+                    {(profile.skills || []).slice(0, 3).map((skill) => (
                       <Badge key={skill.id}>{skill.name}</Badge>
                     ))}
-                    {profile.skills.length > 3 && (
-                      <Badge variant="info">+{profile.skills.length - 3}</Badge>
+                    {(profile.skills || []).length > 3 && (
+                      <Badge variant="info">+{(profile.skills || []).length - 3}</Badge>
                     )}
                   </div>
                   
