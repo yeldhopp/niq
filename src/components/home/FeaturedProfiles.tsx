@@ -7,7 +7,7 @@ import { Card, CardContent } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 
-// Mock data for development/demo purposes
+// Mock data as fallback
 const mockProfiles: Profile[] = [
   {
     id: 1,
@@ -82,14 +82,24 @@ const mockProfiles: Profile[] = [
 export const FeaturedProfiles: React.FC = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         const featuredProfiles = await profilesAPI.getFeaturedProfiles();
-        setProfiles(featuredProfiles);
+        
+        if (featuredProfiles && featuredProfiles.length > 0) {
+          setProfiles(featuredProfiles);
+        } else {
+          // Use mock data if no profiles from API
+          setProfiles(mockProfiles);
+        }
       } catch (err) {
-        // Silently fall back to mock data for demo purposes
+        console.warn('Failed to fetch profiles from API, using mock data:', err);
+        setError('Using demo data - connect to WordPress backend for live data');
         setProfiles(mockProfiles);
       } finally {
         setIsLoading(false);
@@ -104,7 +114,15 @@ export const FeaturedProfiles: React.FC = () => {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <p>Loading featured profiles...</p>
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
+              <div className="h-4 bg-gray-200 rounded w-96 mx-auto mb-8"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="bg-gray-200 rounded-lg h-96 animate-pulse"></div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -114,6 +132,12 @@ export const FeaturedProfiles: React.FC = () => {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
+        {error && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
+            <p className="text-yellow-800 text-sm">{error}</p>
+          </div>
+        )}
+        
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Top IT Professionals</h2>
@@ -138,7 +162,7 @@ export const FeaturedProfiles: React.FC = () => {
               <CardContent className="p-0 flex flex-col h-full">
                 <div className="aspect-square relative overflow-hidden">
                   <img 
-                    src={profile.avatar_url || 'https://via.placeholder.com/300'}
+                    src={profile.avatar_url || 'https://images.pexels.com/photos/3796217/pexels-photo-3796217.jpeg?auto=compress&cs=tinysrgb&w=400'}
                     alt={profile.display_name}
                     className="w-full h-full object-cover"
                   />

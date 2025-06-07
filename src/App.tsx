@@ -38,14 +38,19 @@ function App() {
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/blog" element={<BlogPage />} />
           
-          {/* Placeholder routes for other footer links */}
-          <Route path="/post-project" element={<div className="container mx-auto px-4 py-20 text-center"><h1 className="text-2xl font-bold">Post Project - Coming Soon</h1></div>} />
-          <Route path="/create-profile" element={<div className="container mx-auto px-4 py-20 text-center"><h1 className="text-2xl font-bold">Create Profile - Coming Soon</h1></div>} />
-          <Route path="/success-stories/clients" element={<div className="container mx-auto px-4 py-20 text-center"><h1 className="text-2xl font-bold">Client Success Stories - Coming Soon</h1></div>} />
-          <Route path="/resources/freelancers" element={<div className="container mx-auto px-4 py-20 text-center"><h1 className="text-2xl font-bold">Freelancer Resources - Coming Soon</h1></div>} />
-          
           {/* 404 Page */}
-          <Route path="*" element={<div className="container mx-auto px-4 py-20 text-center"><h1 className="text-2xl font-bold">Page Not Found</h1></div>} />
+          <Route path="*" element={
+            <div className="container mx-auto px-4 py-20 text-center">
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">Page Not Found</h1>
+              <p className="text-xl text-gray-600 mb-8">The page you're looking for doesn't exist.</p>
+              <a 
+                href="/" 
+                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Go Home
+              </a>
+            </div>
+          } />
         </Routes>
       </main>
       <Footer />

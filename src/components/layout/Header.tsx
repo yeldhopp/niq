@@ -81,8 +81,8 @@ export const Header: React.FC = () => {
                 <ChevronDown size={20} />
               </button>
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                <Link to="/dashboard" className="block px-4 py-3 text-base text-gray-700 hover:bg-blue-50">Dashboard</Link>
-                <Link to="/profile" className="block px-4 py-3 text-base text-gray-700 hover:bg-blue-50">My Profile</Link>
+                <a href="https://tech.niq.net/dashboard" className="block px-4 py-3 text-base text-gray-700 hover:bg-blue-50">Dashboard</a>
+                <a href="https://tech.niq.net/profile" className="block px-4 py-3 text-base text-gray-700 hover:bg-blue-50">My Profile</a>
                 <button 
                   onClick={logout}
                   className="block w-full text-left px-4 py-3 text-base text-red-600 hover:bg-red-50"
@@ -159,13 +159,13 @@ export const Header: React.FC = () => {
             <div className="pt-4 space-y-4">
               {user ? (
                 <>
-                  <Link 
-                    to="/dashboard" 
+                  <a 
+                    href="https://tech.niq.net/dashboard" 
                     className="block py-3 text-lg text-blue-600 font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Dashboard
-                  </Link>
+                  </a>
                   <button 
                     onClick={() => {
                       logout();

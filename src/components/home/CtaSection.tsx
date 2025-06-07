@@ -41,7 +41,7 @@ export const CtaSection: React.FC = () => {
               <div className="flex flex-wrap gap-4">
                 <Button 
                   as="a" 
-                  href="/post-project"
+                  href="https://tech.niq.net/post-project"
                   variant="accent"
                   rightIcon={<ArrowRight size={16} />}
                 >

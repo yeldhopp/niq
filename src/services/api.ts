@@ -6,11 +6,16 @@ const API_BASE_URL = 'https://tech.niq.net/wp-json/niq-network/v1';
 async function fetchAPI<T>(endpoint: string, options = {}): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     credentials: 'include', // Important for auth cookies
+    headers: {
+      'Content-Type': 'application/json',
+      ...((options as any).headers || {}),
+    },
     ...options,
   });
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${await response.text()}`);
+    const errorText = await response.text();
+    throw new Error(`API Error: ${response.status} ${errorText}`);
   }
 
   return response.json();
@@ -21,10 +26,12 @@ export const projectsAPI = {
   getProjects: (page = 1, filters = {}): Promise<{ projects: Project[], total: number }> => {
     const queryParams = new URLSearchParams({
       page: page.toString(),
+      per_page: '10',
       ...filters,
     });
     
-    return fetchAPI(`/projects?${queryParams.toString()}`);
+    return fetchAPI(`/projects?${queryParams.toString()}`)
+      .then(data => Array.isArray(data) ? { projects: data, total: data.length } : data);
   },
   
   getProject: (id: number): Promise<Project> => {
@@ -32,7 +39,8 @@ export const projectsAPI = {
   },
   
   getFeaturedProjects: (): Promise<Project[]> => {
-    return fetchAPI('/projects?featured=1&per_page=3');
+    return fetchAPI('/projects?featured=1&per_page=3')
+      .then(data => Array.isArray(data) ? data : data.projects || []);
   },
 };
 
@@ -41,10 +49,12 @@ export const profilesAPI = {
   getProfiles: (page = 1, filters = {}): Promise<{ profiles: Profile[], total: number }> => {
     const queryParams = new URLSearchParams({
       page: page.toString(),
+      per_page: '10',
       ...filters,
     });
     
-    return fetchAPI(`/profiles?${queryParams.toString()}`);
+    return fetchAPI(`/profiles?${queryParams.toString()}`)
+      .then(data => Array.isArray(data) ? { profiles: data, total: data.length } : data);
   },
   
   getProfile: (id: number): Promise<Profile> => {
@@ -52,7 +62,8 @@ export const profilesAPI = {
   },
   
   getFeaturedProfiles: (): Promise<Profile[]> => {
-    return fetchAPI('/profiles?featured=1&per_page=4');
+    return fetchAPI('/profiles?featured=1&per_page=4')
+      .then(data => Array.isArray(data) ? data : data.profiles || []);
   },
 };
 
@@ -77,7 +88,6 @@ export const bidsAPI = {
   submitBid: (projectId: number, bidData: Partial<Bid>): Promise<Bid> => {
     return fetchAPI('/bids', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ project_id: projectId, ...bidData }),
     });
   },

@@ -25,17 +25,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const currentUser = await userAPI.getCurrentUser();
       setUser(currentUser);
     } catch (err) {
-      setError('Failed to fetch user data');
-      console.error(err);
+      // User not logged in - this is normal, don't set error
+      setUser(null);
+      console.log('User not authenticated');
     } finally {
       setIsLoading(false);
     }
   };
 
   const logout = () => {
-    // Since authentication is handled by WordPress,
-    // we just redirect to the WordPress logout URL
-    window.location.href = 'https://tech.niq.net/wp-login.php?action=logout';
+    // Redirect to WordPress logout which will redirect back to our site
+    window.location.href = 'https://tech.niq.net/wp-login.php?action=logout&redirect_to=' + encodeURIComponent(window.location.origin);
   };
 
   // Check authentication status when component mounts
